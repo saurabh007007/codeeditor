@@ -1,21 +1,21 @@
-import express from 'express';
-import { register,login,logout,check } from '../controllers/auth.controllers';
+import express from "express";
+import {
+  register,
+  login,
+  logout,
+  check,
+} from "../controllers/auth.controller";
 
 const authRouter = express.Router();
 
-//register Routes 
+//register Routes
 
+authRouter.post("/register", register);
 
+authRouter.post("/login", login);
 
-authRouter.post("/register",register)
+authRouter.post("/logout", logout);
 
-authRouter.post("/login",login)
+authRouter.get("/check", check);
 
-authRouter.post("/logout",logout)
-
-authRouter.get("/check",check)
-
-
-
-
-export default(authRouter)
+export default authRouter;
