@@ -1,15 +1,31 @@
 import express,{Request,Response} from "express";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+
+
+
+import authRouter from "./routes/auth.routes";
+
 dotenv.config();
+const app = express();
+
+// Middleware all goes here 
+app.use(express.json());
+app.use(cookieParser())
 
 const PORT=process.env.PORT || 3000;
 
-const app = express();3000
 app.get("/",(req:Request,res:Response)=>{
-    res.send("hello world")
+    res.send("hello world 🐵")
 })
 
 
+//Routes 
+app.use("/api/v1/auth",authRouter)
+
+
+
+
 app.listen(PORT,()=>{
-    console.log("Server is running on port 3000");
+    console.log("Server is running on port " + PORT);
 })
