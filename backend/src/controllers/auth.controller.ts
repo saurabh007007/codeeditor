@@ -149,13 +149,16 @@ export const logout = async (req: Request, res: Response):Promise<any> => {
 
 // check routes
 export const check = async (req: Request, res: Response):Promise<any> => {
-  try{
+  try {
     res.status(200).json({
-      success:true,
-      message:"User authenticated successfully"
+        success:true,
+        message:"User authenticated successfully",
+        user:req.user
+    });
+} catch (error) {
+    console.error("Error checking user:", error);
+    res.status(500).json({
+        error:"Error checking user"
     })
-
-  }catch(error:any){
-
-  }
+}
 };
