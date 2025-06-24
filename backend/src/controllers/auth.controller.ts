@@ -122,7 +122,40 @@ export const login = async (
 };
 
 //logout routes
-export const logout = async (req: Request, res: Response):Promise<any> => {};
+export const logout = async (req: Request, res: Response):Promise<any> => {
+  try{
+    res.clearCookie("jwt",{
+      httpOnly:true,
+      sameSite:"strict",
+      secure:process.env.NODE_ENV!== "development"
+    })
+
+    return res.status(204).json({
+      message:"User Logout succesfully ",
+      success:true
+    })
+
+  }catch(error: any) {
+    console.log(error.message);
+    return res.status(500).json({
+      message: "Error in logout",
+      error: error.message,
+    });
+  }
+
+
+
+};
 
 // check routes
-export const check = async (req: Request, res: Response):Promise<any> => {};
+export const check = async (req: Request, res: Response):Promise<any> => {
+  try{
+    res.status(200).json({
+      success:true,
+      message:"User authenticated successfully"
+    })
+
+  }catch(error:any){
+
+  }
+};
