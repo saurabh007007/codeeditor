@@ -50,6 +50,35 @@ export const createProblem = async (
 
             const results= await pollBatchResults(tokens);
 
+            for(let i=0;i<results.length;i++){
+                const result:any=results[i];
+                
+                if(result.status.id !==3){
+                    return res.status(400).json({error:`Testcase ${i+1} failed for the langauge${langauge}` })
+                }
+
+                //save the problems in database ; here now
+                const newProblem=await prisma.problem.create({
+                    //@ts-ignore
+                    data:{
+                        title,
+                        description,
+                        difficulty,
+                        tags,
+                        examples,
+                        constraints,
+                        testcases,
+                        codeSnippets,
+                        refrenceSolution,
+                        userId:req.user.id
+
+                    }
+                })
+
+                return res.status(201).json(newProblem);
+
+            }
+
         }
 
 
