@@ -20,8 +20,9 @@ app.get("/",(req:Request,res:Response)=>{
 })
 
 
-//Routes 
+//Routes for authentications
 app.use("/api/v1/auth",authRouter)
+
 
 
 
