@@ -17,10 +17,10 @@ export const authMiddeware = async (
     }
     let decoded;
     try {
-        const jwtSecret=process.env.JWT_SECRET
-        if(!jwtSecret){
-            throw new Error(" JWT IS NOT DEFINED") 
-        }
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        throw new Error(" JWT IS NOT DEFINED");
+      }
       decoded = jwt.verify(token, jwtSecret) as jwt.JwtPayload;
     } catch (error) {
       return res.status(401).json({
@@ -50,9 +50,41 @@ export const authMiddeware = async (
     req.user = user;
     next();
   } catch (error: any) {
-    console.log("Error in authentication", error)
+    console.log("Error in authentication", error);
     res.status(500).json({
-        message:"Error in authentication user"
-    })
+      message: "Error in authentication user",
+    });
+  }
+};
+
+export const isAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  try {
+    const userId = req.user?.id;
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        role: true,
+      },
+    });
+    if (!user || user.role !== "ADMIN") {
+      return res.status(403).json({
+        message:
+          "Forbidden - You do not have permission to access this resource NOT ADMIN",
+        success: false,
+      });
+    }
+    next();
+  } catch (error: any) {
+    console.log("Error in isAdmin middleware", error);
+    res.status(500).json({
+      message: "Error in isAdmin middleware",
+    });
   }
 };

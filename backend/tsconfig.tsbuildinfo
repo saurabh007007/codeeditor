@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/controllers/auth.controller.ts","./src/libs/PrismaDb.ts","./src/middleware/auth.middleware.ts","./src/routes/auth.routes.ts","./src/types/express/index.d.ts"],"version":"5.8.3"}
+{"root":["./src/index.ts","./src/controllers/auth.controller.ts","./src/libs/PrismaDb.ts","./src/middleware/auth.middleware.ts","./src/routes/auth.routes.ts","./src/routes/problem.routes.ts","./src/types/express/index.d.ts"],"version":"5.8.3"}

@@ -1,6 +1,7 @@
 import express,{Request,Response} from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import ProblemRouter from "./routes/problem.routes";
 
 
 
@@ -23,6 +24,8 @@ app.get("/",(req:Request,res:Response)=>{
 //Routes for authentications
 app.use("/api/v1/auth",authRouter)
 
+//problem routes hai bro 
+app.use("/api/v1/problems",ProblemRouter)
 
 
 
