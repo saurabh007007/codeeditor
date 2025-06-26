@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { prisma } from "../libs/PrismaDb";
 import { getJudge0LanguageId, pollBatchResults, submitBatch } from "../libs/juge0.lib";
 
+
 export const createProblem = async (
     req: Request,
     res: Response
@@ -16,7 +17,7 @@ export const createProblem = async (
         constraints,
         testcases,
         codeSnippets,
-        refrenceSolution,
+        referenceSolutions,
     } = req.body;
 
     if (req.user?.role !== "ADMIN") {
@@ -27,7 +28,7 @@ export const createProblem = async (
     }
     try {
         for (const [langauge, solutionCode] of Object.entries(
-            refrenceSolution || {}
+            referenceSolutions || {}
         )) {
             const languageId = getJudge0LanguageId(langauge);
             if (!languageId) {
@@ -49,9 +50,11 @@ export const createProblem = async (
             const tokens=submissionResults.map((res:any)=>res.token);
 
             const results= await pollBatchResults(tokens);
+            console.log('poll result are ----',results)
 
             for(let i=0;i<results.length;i++){
                 const result:any=results[i];
+                console.log("Results ---------",result)
                 
                 if(result.status.id !==3){
                     return res.status(400).json({error:`Testcase ${i+1} failed for the langauge${langauge}` })
@@ -69,20 +72,31 @@ export const createProblem = async (
                         constraints,
                         testcases,
                         codeSnippets,
-                        refrenceSolution,
+                        referenceSolutions,
                         userId:req.user.id
 
                     }
                 })
 
-                return res.status(201).json(newProblem);
+                return res.status(201).json({
+                    success:true,
+                    message:"Probem created suceessfully ",
+                    problem:newProblem
+                });
 
             }
 
         }
 
 
-    } catch (error) { }
+    } catch (error) { 
+        console.log(error)
+        return res.status(500).json({
+            error:error,
+            success:false,
+            message:"Issue in craeting problems"
+        })
+    }
 };
 
 
