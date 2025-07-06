@@ -1,9 +1,11 @@
 import express from "express";
+import { authMiddeware } from "../middleware/auth.middleware";
+import { executeCode } from "../controllers/execute.controller";
 
 const executionRoute = express.Router();
 
 
-executionRoute.post("/",)
+executionRoute.post("/",authMiddeware,executeCode)
 
 
 
