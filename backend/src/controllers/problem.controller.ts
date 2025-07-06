@@ -133,7 +133,39 @@ export const getProblems = async (
 export const getProblemById = async (
     req: Request,
     res: Response
-): Promise<any> => { };
+): Promise<any> => { 
+
+ const {id}=req.params;
+ try {
+    const problem= await prisma.problem.findUnique({
+        where:{
+            id
+        }
+    })
+
+    if(!problem){
+        return res.status(404).json({
+            success:false,
+            message:"Problem not found"
+        })
+    }
+    return res.status(200).json({
+        success:true,
+        problem,
+        message:"Problem found successfully"
+    })
+ } catch (error) {
+    return res.status(500).json({
+    
+        success:false,
+        message:"Error in fetching problem",
+        error:error
+
+    })
+    
+ }
+
+};
 
 export const updateProblemById = async (
     req: Request,

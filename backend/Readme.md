@@ -26,3 +26,4 @@ npx prisma db sync
 npm run dev
 ``` 
 
+
