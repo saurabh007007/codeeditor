@@ -2,7 +2,7 @@ import express,{Request,Response} from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import ProblemRouter from "./routes/problem.routes";
-
+import executionRoute from "./routes/executeCode.routes";
 
 
 import authRouter from "./routes/auth.routes";
@@ -26,6 +26,9 @@ app.use("/api/v1/auth",authRouter)
 
 //problem routes hai bro 
 app.use("/api/v1/problems",ProblemRouter)
+//code exectution section here
+
+app.use("/api/v1/execute-code",executionRoute)
 
 
 
