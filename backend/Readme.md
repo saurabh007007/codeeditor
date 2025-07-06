@@ -11,3 +11,12 @@ JWT_SECRET="SaurabhYadav"
 JUGE0_API_URL="http://localhost:2358" 
 
 ```
+
+# Install the dependencies
+```bash
+npm install
+``` 
+# Run the migrations
+```bash
+npx prisma db sync
+``` 
