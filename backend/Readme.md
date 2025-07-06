@@ -20,3 +20,9 @@ npm install
 ```bash
 npx prisma db sync
 ``` 
+
+# Run the backend server
+```bash
+npm run dev
+``` 
+
