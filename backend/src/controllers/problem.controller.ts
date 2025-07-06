@@ -170,7 +170,113 @@ export const getProblemById = async (
 export const updateProblemById = async (
     req: Request,
     res: Response
-): Promise<any> => { };
+): Promise<any> => { 
+    const {id}=req.params;
+    if(!id){
+        return res.status(400).json({
+            success:false,
+            message:"Problem ID is required"
+        })
+    }
+    if(req.user?.role !=='ADMIN'){
+        return res.status(403).json({
+            success:false,
+            message:"You are not authorized to update this problem"
+        })
+    }
+    const {
+        title,
+        description,
+        difficulty,
+        tags,
+        examples,
+        constraints,
+        testcases,
+        codeSnippets,
+        referenceSolutions,
+    } = req.body;
+
+    if (req.user?.role !== "ADMIN") {
+        return res.status(403).json({
+            message: "You are not authorized to create a problem.",
+            success: false,
+        });
+    }
+    try {
+        for (const [langauge, solutionCode] of Object.entries(
+            referenceSolutions || {}
+        )) {
+            const languageId = getJudge0LanguageId(langauge);
+            if (!languageId) {
+                return res.status(400).json({
+                    message: `Unsupported language: ${langauge}`,
+                    success: false,
+                });
+            }
+            //@ts-ignore
+            const submissions = testcases.map(({ input, output }) => ({
+                source_code: solutionCode,
+                language_id: languageId,
+                stdin: input,
+                expected_output: output,
+            }));
+
+            const submissionResults= await submitBatch(submissions)
+        
+            const tokens=submissionResults.map((res:any)=>res.token);
+
+            const results= await pollBatchResults(tokens);
+            console.log('poll result are ----',results)
+
+            for(let i=0;i<results.length;i++){
+                const result:any=results[i];
+                console.log("Results ---------",result)
+                
+                if(result.status.id !==3){
+                    return res.status(400).json({error:`Testcase ${i+1} failed for the langauge${langauge}` })
+                }
+
+                //save the problems in database ; here now
+                const newProblem=await prisma.problem.update({
+                    where:{
+                        id
+                    },
+                    //@ts-ignore
+                    data:{
+                        title,
+                        description,
+                        difficulty,
+                        tags,
+                        examples,
+                        constraints,
+                        testcases,
+                        codeSnippets,
+                        referenceSolutions,
+                        userId:req.user.id
+
+                    }
+                })
+
+                return res.status(201).json({
+                    success:true,
+                    message:"Problem Updated successfully ",
+                    problem:newProblem
+                });
+
+            }
+
+        }
+
+
+    } catch (error) { 
+        console.log(error)
+        return res.status(500).json({
+            error:error,
+            success:false,
+            message:"Issue in craeting problems"
+        })
+    }
+};
 
 export const deleteProblemById = async (
     req: Request,
