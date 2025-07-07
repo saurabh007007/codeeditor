@@ -323,4 +323,39 @@ export const deleteProblemById = async (
 export const getAllProblemSolvedByUser = async (
     req: Request,
     res: Response
-): Promise<any> => { };
+): Promise<any> => { 
+    try {
+        const problems = await prisma.problem.findMany({
+            where:{
+                problemsSolvedBy:{
+                    some:{
+                        userId:req.user?.id
+                    }
+                }
+            },
+            include:{
+                problemsSolvedBy:{
+                    where:{
+                        userId:req.user?.id
+                    }
+                }
+            }
+
+
+            
+        })
+        return res.status(200).json({
+            success:true,
+            problems,
+            message:"Problems solved by user fetched successfully"
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Error in fetching problems solved by user",
+            error:error
+        })
+        
+    }
+};
