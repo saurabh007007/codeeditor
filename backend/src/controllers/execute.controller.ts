@@ -113,12 +113,39 @@ export const executeCode = async (req: Request, res: Response): Promise<any> => 
         }
 
         //save individual test case results now 
+        const testCaseResults= detailedResults.map((result:any)=>({
+            submissionId: submissions.id,
+            testCase: result.testCase,
+            passed:result.passed,
+            input:result.stdin ||"",
+            stdout:result.stdout,
+            expected:result.expected,
+            stderr:result.stderr,
+            compiledOutput:result.compiledOutput,
+            status:result.status,
+            memory:result.memory,
+            time:result.time,
+
+        }))
+        const testCaseSave= await prisma.testCaseResult.createMany({
+            data: testCaseResults
+        })
+
+        const submissionWithTestCases= await prisma.submission.findUnique({
+            where: {
+                id: submissions.id
+            },
+            include: {
+                testCases: true
+            }
+        })
 
 
         return res.status(200).json({
             success: true,
             message: "Code executed successfully",
-            data: results
+            // data: results,
+            submision:submissionWithTestCases
         });
 
     } catch (error: any) {
