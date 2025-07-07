@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
-import { pollBatchResults, submitBatch } from "../libs/juge0.lib";
+import { getLanguageName, pollBatchResults, submitBatch } from "../libs/juge0.lib";
+import { prisma } from "../libs/PrismaDb";
+import ts from "typescript";
 export const executeCode = async (req: Request, res: Response): Promise<any> => {
     try {
 
@@ -74,7 +76,44 @@ export const executeCode = async (req: Request, res: Response): Promise<any> => 
         })
         console.log("Detailed Results:", detailedResults);
 
-        
+        //store data in the database 
+        const submissions= await prisma.submission.create({
+            data:{
+                userId: userId || "anonymous",
+                problemId,
+                language: getLanguageName(language_id),
+                sourceCode:source_code,
+                status: allPassed ? "ACCEPTED" : "WRONG_ANSWER",
+                stdin:stdin.join("\n"),
+                stdout:JSON.stringify(detailedResults.map((result:any)=> result.stdout)),
+                stderr:detailedResults.some((r:any)=>r.stderr) ? JSON.stringify(detailedResults.map((result:any)=> result.stderr)) : null,
+                compiledOutput: detailedResults.some((r:any)=>r.compile_output) ? JSON.stringify(detailedResults.map((result:any)=> result.compile_output)) : null,
+                memory: detailedResults.some((r:any)=>r.memory) ? JSON.stringify(detailedResults.map((result:any)=> result.memory)) : null,
+                time: detailedResults.some((r:any)=>r.time) ? JSON.stringify(detailedResults.map((result:any)=> result.time)) : null,
+            }
+        })
+
+        if(allPassed){
+            const solvedProblem=await prisma.problemSolved.upsert({
+                where: {
+                    userId_problemId: {
+                        userId: userId || "anonymous",
+                        problemId: problemId
+                    }
+                },
+                update: {
+                    
+                },
+                // @ts-ignore
+                create:{
+                    userId,
+                    problemId
+                }
+            })
+        }
+
+        //save individual test case results now 
+
 
         return res.status(200).json({
             success: true,
