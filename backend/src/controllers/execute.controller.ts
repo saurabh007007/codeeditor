@@ -38,6 +38,27 @@ export const executeCode = async (req: Request, res: Response): Promise<any> => 
 
         console.log("Results from Juge Zero:", results);
 
+        let allPassed =true;
+        const detailedResults=results.map((result:any,i:number)=>{
+            const stdout=result.stdout?.trim();
+            const expected_outputs=expected_output[i]?.trim();
+            const passed = stdout === expected_outputs;
+
+            if (!passed) {
+                allPassed = false;
+            }
+            
+            return {
+                input: stdin[i],
+                expected: expected_outputs,
+                actual: stdout,
+                passed
+            };
+        })
+
+
+
+
         return res.status(200).json({
             success: true,
             message: "Code executed successfully",
