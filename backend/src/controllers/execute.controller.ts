@@ -47,17 +47,34 @@ export const executeCode = async (req: Request, res: Response): Promise<any> => 
             if (!passed) {
                 allPassed = false;
             }
-            
+
+            // console.log(`Test Case ${i + 1}:`);
+            // console.log(`Input: ${stdin[i]}`);
+            // console.log(`Expected Output: ${expected_outputs}`);
+            // console.log(`Actual Output: ${stdout}`);
+            // console.log(`Passed: ${passed}`);
+
             return {
+                testCase:i+1,
+                passed,
+                stdout,
+                expected_output: expected_outputs,
                 input: stdin[i],
-                expected: expected_outputs,
-                actual: stdout,
-                passed
-            };
+                stderr: result.error || null,
+                compile_output:result.compile_outputs || null,
+                status:result.status.description,
+                memory:result.memory ? `${result.memory} KB`:undefined,
+                time: result.time ? `${result.time} ms` : undefined,
+
+
+
+            }
+
+            
         })
+        console.log("Detailed Results:", detailedResults);
 
-
-
+        
 
         return res.status(200).json({
             success: true,
