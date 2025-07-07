@@ -6,6 +6,7 @@ import executionRoute from "./routes/executeCode.routes";
 
 
 import authRouter from "./routes/auth.routes";
+import submitionRoute from "./routes/submission.routes";
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,9 @@ app.use("/api/v1/problems",ProblemRouter)
 //code exectution section here
 
 app.use("/api/v1/execute-code",executionRoute)
+
+//submision routes
+app.use("/api/v1/submissions",submitionRoute)
 
 
 
