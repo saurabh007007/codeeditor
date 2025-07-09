@@ -8,6 +8,8 @@ import executionRoute from "./routes/executeCode.routes";
 import authRouter from "./routes/auth.routes";
 import submitionRoute from "./routes/submission.routes";
 import playListRoutes from "./routes/playlist.roues";
+import cors from "cors"
+
 
 dotenv.config();
 const app = express();
@@ -15,6 +17,13 @@ const app = express();
 // Middleware all goes here 
 app.use(express.json());
 app.use(cookieParser())
+
+//cors setup 
+
+app.use(cors({
+    origin:["http://localhost:5173"],
+    credentials:true
+}))
 
 const PORT=process.env.PORT || 3000;
 
