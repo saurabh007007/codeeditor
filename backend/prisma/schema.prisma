@@ -37,6 +37,7 @@ model User{
   problems Problem[]
   submissions Submission[]
   problemsSolved ProblemSolved[]
+  playlists Playlist[]
 }
 
 model Problem{
@@ -61,6 +62,7 @@ model Problem{
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   submissions Submission[]
   problemsSolvedBy ProblemSolved[]
+  problemInPlaylists ProblemInPlaylist[]
 }
 
 model Submission{

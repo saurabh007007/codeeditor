@@ -7,6 +7,7 @@ import executionRoute from "./routes/executeCode.routes";
 
 import authRouter from "./routes/auth.routes";
 import submitionRoute from "./routes/submission.routes";
+import playListRoutes from "./routes/playlist.roues";
 
 dotenv.config();
 const app = express();
@@ -33,6 +34,9 @@ app.use("/api/v1/execute-code",executionRoute)
 
 //submision routes
 app.use("/api/v1/submissions",submitionRoute)
+
+//playlist routes
+app.use("/api/v1/playlist",playListRoutes)
 
 
 
