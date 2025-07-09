@@ -359,3 +359,10 @@ export const getAllProblemSolvedByUser = async (
         
     }
 };
+
+
+export const  check= async (req:Request,res:Response):Promise<any>=>{
+
+}
+
+
