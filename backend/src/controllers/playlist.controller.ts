@@ -38,7 +38,40 @@ export const  createPlayList = async (req: Request, res: Response): Promise<any>
 export const getPlayListById = async (req: Request, res: Response): Promise<any> => {}
 
 
-export const getAllListDetails = async (req: Request, res: Response): Promise<any> => {}
+export const getAllListDetails = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const playlist =await prisma.playlist.findMany({
+            where:{
+                userId:req.user?.id 
+            },
+            include:{
+                problems:{
+                    include:{
+                        problem:true
+                    }
+                }
+            }
+        })
+
+        return res.status(200).json({
+            success: true,
+            message: "Playlists fetched successfully",
+            playlists: playlist
+        })
+        
+    } catch (error) {
+        console.error("Error in fetching playlists:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error in fetching playlists",
+            error: error
+        });
+        
+    }
+
+
+}
+
 
 
 export const addProblemToPlaylist = async (req: Request, res: Response): Promise<any> => {}
