@@ -10,10 +10,10 @@ createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <StrictMode>
       <Toaster
-  position="top-center"
-  reverseOrder={false}
-/>
+        position="top-center"
+        reverseOrder={false}
+      />
       <App />
-    </StrictMode>,
+    </StrictMode>
   </BrowserRouter>
 )
