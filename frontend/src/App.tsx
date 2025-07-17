@@ -6,6 +6,10 @@ import { Signup } from "./components/AuthComponents/Signup"
 import { useAuthStore } from "./store/useAuthStore"
 import { useEffect } from "react"
 import { Loader } from "lucide-react"
+import {Navbar} from "./components/Shared/Navbar"
+import { AdminRoute } from "./components/AuthComponents/AdminRoute"
+import { AddProblem } from "./pages/AddProblem"
+
 
 
 
@@ -27,15 +31,23 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-start">
-
+      <div >
+        <Navbar />
 
         <Routes>
-          <Route path="/" element={<MainPage/>}/>
-          <Route path="/home" element={<Home/> }/>
-          <Route path="/login" element={!authUser?<Login /> : <Navigate to={ "/" } />} />
-          <Route path="/signup" element={!authUser ? <Signup/> : <Navigate to="/" />}  />
           
+            <Route path="/" element={<MainPage/>} />
+          
+
+          <Route path="/home" element={<Home/> }/>
+          <Route path="/login" element={!authUser?<Login /> : <Navigate to={ "/home" } />} />
+          <Route path="/signup" element={!authUser ? <Signup/> : <Navigate to="/home" />}  />
+
+          {/* //Admin routes yha dunga */}
+          <Route element={<AdminRoute/>}>
+          <Route path="/add-problem" element={authUser?<AddProblem />:<Navigate to="/home" />} />
+
+          </Route>
         </Routes>
       </div>
     </>

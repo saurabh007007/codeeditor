@@ -44,7 +44,7 @@ export const Login = () => {
       <div className="hidden lg:flex items-center justify-center bg-gradient-to-br from-primary to-indigo-600 text-white">
         <div className="text-center space-y-4 px-12">
           <Code className="w-16 h-16 mx-auto text-white drop-shadow-lg" />
-          <h2 className="text-3xl font-bold">DevDash</h2>
+          <h2 className="text-3xl font-bold">DSAKero</h2>
           <p className="text-zinc-100 text-lg">
             Manage your developer tools in one place. Fast. Secure. Intuitive.
           </p>
