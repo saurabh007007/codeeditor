@@ -112,10 +112,23 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  html {
+    @apply h-full;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply h-full bg-background text-foreground antialiased;
   }
+
+  #root {
+    @apply h-full;
+  }
+}
+/* styles/globals.css or index.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0f0f0f; /* fallback bg if needed */
 }
