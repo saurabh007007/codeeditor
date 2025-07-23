@@ -7,7 +7,7 @@ const submitionRoute=express.Router();
 
 
 submitionRoute.get("/get-all-submissions",authMiddeware,getAllSubmissions)
-submitionRoute.get("/get-submission/:id",authMiddeware,getSubmissionForProblem)
-submitionRoute.get("/get-submission-count/:problemId",authMiddeware,getAllTheSubmissionsForProblem)
+submitionRoute.get("/get-submissions/:id",authMiddeware,getSubmissionForProblem)
+submitionRoute.get("/get-submissions-count/:problemId",authMiddeware,getAllTheSubmissionsForProblem)
 
 export default submitionRoute;

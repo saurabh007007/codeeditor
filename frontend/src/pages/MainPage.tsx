@@ -4,8 +4,25 @@ import { ContainerScroll } from "../components/ui/container-scroll-animation";
 import { Button } from "@/components/ui/button"; // Assuming you're using shadcn/ui
 import { ArrowDown } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import {Loader } from "lucide-react";
+import { useProblemStore } from "../store/useProblemStore";
 
 export function MainPage() {
+
+   const { getAllProblems, problems, isProblemsLoading } = useProblemStore();
+
+  useEffect(() => {
+    getAllProblems();
+  }, [getAllProblems]);
+
+  if(isProblemsLoading){
+    return (
+      <div className="flex items-center justify-center h-screen">
+          <Loader className="size-10 animate-spin"/>
+      </div>
+    )
+  }
   return (
     <div className="flex flex-col overflow-hidden mt-[-4rem] bg-gradient-to-b from-white to-gray-100 dark:from-black dark:to-gray-900">
       <ContainerScroll

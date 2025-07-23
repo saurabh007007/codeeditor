@@ -9,7 +9,7 @@ import { Loader } from "lucide-react"
 import {Navbar} from "./components/Shared/Navbar"
 import { AdminRoute } from "./components/AuthComponents/AdminRoute"
 import { AddProblem } from "./pages/AddProblem"
-
+import { ProblemPage } from "./pages/ProblemPage"
 
 
 
@@ -45,6 +45,9 @@ function App() {
 
           {/* //Admin routes yha dunga */}
           <Route element={<AdminRoute/>}>
+
+          <Route path="/problem/:id" element={authUser ? <ProblemPage /> : <Navigate to="/login" />} />
+
           <Route path="/add-problem" element={authUser?<AddProblem />:<Navigate to="/home" />} />
 
           </Route>

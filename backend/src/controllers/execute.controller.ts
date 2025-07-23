@@ -143,8 +143,9 @@ export const executeCode = async (req: Request, res: Response): Promise<any> => 
 
         return res.status(200).json({
             success: true,
-            message: "Code executed successfully",
-            // data: results,
+            message:results.stderr ,
+            
+            data: results,
             submision:submissionWithTestCases
         });
 
